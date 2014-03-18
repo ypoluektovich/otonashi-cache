@@ -35,6 +35,7 @@ test {
 }
 
 apply plugin: 'bintray'
+apply plugin: 'maven'
 bintray {
     user = bintrayUser
     key = bintrayKey
