@@ -1,7 +1,18 @@
+buildscript {
+    repositories {
+        maven { url 'http://jcenter.bintray.com' }
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
+}
+
 apply plugin: 'java'
 
 group = 'io.otonashi'
 version = '1.0.0'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 sourceSets {
     main.java.srcDir 'src'
@@ -22,3 +33,17 @@ test {
         suites file('testng.xml')
     }
 }
+
+apply plugin: 'bintray'
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    configurations = ['archives']
+    pkg {
+        userOrg = 'ypoluektovich'
+        repo = 'otonashi-io'
+        name = 'otonashi-cache'
+        licenses = ['LGPL-3.0']
+    }
+}
+tasks['bintrayUpload'].dependsOn build
