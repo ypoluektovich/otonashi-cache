@@ -1,0 +1,12 @@
+<suite name="everything">
+    <test name="MemoryStorage">
+        <classes>
+            <class name="io.otonashi.cache.memory.MemoryStorageTest" />
+        </classes>
+    </test>
+    <test name="FileStorage">
+        <classes>
+            <class name="io.otonashi.cache.file.FileStorageTest" />
+        </classes>
+    </test>
+</suite>

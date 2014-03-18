@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+sourceSets {
+    main.java.srcDir 'src'
+    test.java.srcDir 'test'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.testng:testng:6.8.8'
+}
+
+test {
+    scanForTestClasses = false
+    useTestNG() {
+        suites file('testng.xml')
+    }
+}
