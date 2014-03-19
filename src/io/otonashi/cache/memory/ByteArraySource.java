@@ -21,6 +21,11 @@ final class ByteArraySource extends ContentSource<ByteArrayHandle> {
     }
 
     @Override
+    protected int doRead() {
+        return stream.read();
+    }
+
+    @Override
     protected int doRead(byte[] buf, int offset, int length) {
         return stream.read(buf, offset, length);
     }

@@ -30,6 +30,15 @@ final class FileSource extends ContentSource<FileHandle> {
     }
 
     @Override
+    protected int doRead() throws SourceReadException {
+        try {
+            return stream.read();
+        } catch (IOException e) {
+            throw new SourceReadException(e);
+        }
+    }
+
+    @Override
     protected int doRead(byte[] buf, int offset, int length) throws SourceReadException {
         try {
             return stream.read(buf, offset, length);

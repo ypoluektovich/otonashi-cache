@@ -41,6 +41,15 @@ final class FileSink extends ContentSink<FileHandle> {
     }
 
     @Override
+    protected void doWrite(int b) throws SinkWriteException {
+        try {
+            stream.write(b);
+        } catch (IOException e) {
+            throw new SinkWriteException(e);
+        }
+    }
+
+    @Override
     protected void doWrite(byte[] buf, int offset, int length) throws SinkWriteException {
         try {
             stream.write(buf, offset, length);

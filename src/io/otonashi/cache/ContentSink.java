@@ -34,11 +34,7 @@ public abstract class ContentSink<H extends StoredDataHandle> implements AutoClo
     protected abstract void doOpen() throws SinkOpenException;
 
 
-    public final void write(byte[] buf) throws ClosedSinkException, BadBufferException, SinkWriteException {
-        write(buf, 0, buf.length);
-    }
-
-    public final synchronized void write(byte[] buf, int offset, int length) throws ClosedSinkException, BadBufferException, SinkWriteException {
+    private void checkSinkStateBeforeWriting() throws ClosedSinkException {
         State state = this.state.get();
         if (state != State.OPEN) {
             if (state == State.OVERRIDDEN) {
@@ -51,11 +47,31 @@ public abstract class ContentSink<H extends StoredDataHandle> implements AutoClo
             }
             throw new ClosedSinkException();
         }
+    }
+
+    public final synchronized void write(int b) throws ClosedSinkException, SinkWriteException {
+        checkSinkStateBeforeWriting();
+        doWrite(b);
+    }
+
+    protected abstract void doWrite(int b) throws SinkWriteException;
+
+    public final void write(byte[] buf) throws ClosedSinkException, BadBufferException, SinkWriteException {
+        write(buf, 0, buf.length);
+    }
+
+    public final synchronized void write(byte[] buf, int offset, int length) throws ClosedSinkException, BadBufferException, SinkWriteException {
+        checkSinkStateBeforeWriting();
         BadBufferException.checkBufferParameters(buf, offset, length);
         doWrite(buf, offset, length);
     }
 
     protected abstract void doWrite(byte[] buf, int offset, int length) throws SinkWriteException;
+
+
+    public final SinkOutputStream getOutputStream() {
+        return new SinkOutputStream(this);
+    }
 
 
     final void override() {
